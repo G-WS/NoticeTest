@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">NoticeTest</string>
+    <string name="send_notice">send notice</string>
+    <string name="channel_name">channeltest</string>
+</resources>
