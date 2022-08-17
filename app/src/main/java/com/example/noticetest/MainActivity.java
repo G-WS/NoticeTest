@@ -37,9 +37,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(id, name, NotificationManager.IMPORTANCE_DEFAULT);
             mNotificationManager.createNotificationChannel(notificationChannel);
-            Button sendNotice = (Button) findViewById(R.id.send_notice);
-            sendNotice.setOnClickListener(MainActivity.this);
+
         }
+        Button sendNotice = (Button) findViewById(R.id.send_notice);
+        sendNotice.setOnClickListener(MainActivity.this);
     }
 
     @Override
@@ -59,6 +60,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //通知渠道的id
         String id = "my_channel_01";
+        Intent intent = new Intent(MainActivity.this, NotificationActivity.class);
+        PendingIntent pendingIntent;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.S) {
+            pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
+        } else {
+            pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+        }
+
         Notification notification = new NotificationCompat.Builder(MainActivity.this, id)
                 // 指定通知的标题内容，下拉状态栏显示
                 .setContentTitle("This is content title")
@@ -66,8 +75,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .setContentText("This is content text")
                 // 设置通知的小图标，显示在状态栏上，只能使用纯 alpha 图层的图片
                 .setSmallIcon(R.drawable.apple)
+                .setContentIntent(pendingIntent)
+                //设置是否点击后消失
+                .setAutoCancel(true)
+
                 // 设置通知的大图标，下拉状态栏显示
                 .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.apple_large))
+//                //设置震动
+//                .setVibrate(new long[]{0, 1000, 1000, 1000})
+                //根据手机环境决定
+                .setDefaults(NotificationCompat.DEFAULT_ALL)
                 .build();
         mNotificationManager.notify(1, notification);
     }

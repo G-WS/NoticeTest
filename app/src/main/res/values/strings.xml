@@ -2,4 +2,5 @@
     <string name="app_name">NoticeTest</string>
     <string name="send_notice">send notice</string>
     <string name="channel_name">channeltest</string>
+    <string name="this_is_notification_layout">This is notification layout</string>
 </resources>
